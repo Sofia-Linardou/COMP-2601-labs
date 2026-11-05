@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include "musical_notes.h"
 #include <stm32l031xx.h>
 
 #define TIMER_TICK_HZ 1000000UL  // TIM2 counter runs at 1 MHz
