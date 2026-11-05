@@ -12,6 +12,13 @@ void initTimer(void);
 int btn1pressed(void);
 int btn2pressed(void);
 void playNote(uint32_t Freq);
+void greenOn(void);   
+void yellowOn(void);   
+void redOn(void);   
+void greenOff(void);   
+void yellowOff(void);   
+void redOff(void);   
+void trafficLights(void) ;
 
 int main(void)
 {
@@ -35,6 +42,7 @@ int main(void)
         if (btn1pressed())
         {
             playNote(1000);           // Play a 1 kHz tone on PB1
+            trafficLights();  
             while (btn1pressed());   // Wait until button is released
         }
         playNote(0);                  // Stop the sound
@@ -134,3 +142,84 @@ void initTimer(void)
     TIM2->CNT = 0u;
     TIM2->EGR = TIM_EGR_UG;          // Apply prescaler and preload values
 }
+
+void trafficLights(void) 
+
+{ 
+  delay(200000); 
+  greenOff();   
+  yellowOn();   
+  delay(200000);   
+  yellowOff();   
+  redOn();   
+  delay(400000);   
+  redOff();  
+  greenOn();
+} 
+
+ 
+void greenOn()   
+
+{   
+  uint32_t original;   
+  original = GPIOA->ODR;   
+  original = original | 1;   
+  GPIOA->ODR = original;   
+
+}   
+
+  
+
+void yellowOn()   
+
+{   
+  uint32_t original;   
+  original = GPIOA->ODR;   
+  original = original | 2;   
+  GPIOA->ODR = original;   
+
+}   
+
+  
+
+void redOn()   
+
+{   
+  uint32_t original;   
+  original = GPIOA->ODR;   
+  original = original | 4;   
+  GPIOA->ODR = original;   
+
+}   
+
+  
+
+void greenOff()   
+
+{   
+  uint32_t original;   
+  original = GPIOA->ODR;   
+  original = original & ~(1);   
+  GPIOA->ODR = original;   
+
+}   
+
+  
+
+void yellowOff()   
+
+{   
+  uint32_t original;   
+  original = GPIOA->ODR;   
+  original = original & ~(2);   
+  GPIOA->ODR = original;   
+
+}   
+
+void redOff()   
+{   
+  uint32_t original;   
+  original = GPIOA->ODR;   
+  original = original & ~(4);   
+  GPIOA->ODR = original;   
+} 
