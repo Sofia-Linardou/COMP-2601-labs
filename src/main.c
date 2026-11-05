@@ -32,8 +32,8 @@ int main(void)
     pinMode(GPIOB, 3, 1); // Make GPIOB bit 3 an output
     pinMode(GPIOB, 4, 0); // Make GPIOB bit 4 an input
     enablePullUp(GPIOB, 4);
-    pinMode(GPIOA, 7, 0); // Make GPIOA bit 7 an input
-    enablePullUp(GPIOA, 7);
+    pinMode(GPIOB, 5, 0); // Make GPIOA bit 5 an input
+    enablePullUp(GPIOB, 5);
 
     initTimer();
 
@@ -51,7 +51,7 @@ int main(void)
 
 int btn1pressed(void)
 {
-    if ((GPIOA->IDR & (1u << 7)) == 0u)
+    if ((GPIOB->IDR & (1u << 5)) == 0u)
         return 1;
     else
         return 0;
