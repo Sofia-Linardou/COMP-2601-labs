@@ -1,4 +1,8 @@
+// Simulation: https://wokwi.com/projects/480137059606440961
+
+#include <stdio.h>
 #include <stdint.h>
+// #include <stm32l0xx_hal.h> // library used in wowki simulation
 #include <stm32l031xx.h>
 
 #define TIMER_TICK_HZ 1000000UL  // TIM2 counter runs at 1 MHz
@@ -38,12 +42,8 @@ int main(void)
 
     while (1)
     {
-        if (btn1pressed())
-        {
             playNote(1000);           // Play a 1 kHz tone on PB1
             trafficLights();  
-            while (btn1pressed());   // Wait until button is released
-        }
         playNote(0);                  // Stop the sound
     }
 }
@@ -51,7 +51,9 @@ int main(void)
 int btn1pressed(void)
 {
     if ((GPIOB->IDR & (1u << 5)) == 0u)
+      {printf("1");
         return 1;
+        }
     else
         return 0;
 }
