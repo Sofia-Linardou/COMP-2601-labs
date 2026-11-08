@@ -24,11 +24,11 @@ int main(void)
     initClock();
     RCC->IOPENR |= RCC_IOPENR_IOPAEN | RCC_IOPENR_IOPBEN; // enable ports A and B
 
-    pinMode(GPIOA, 0, 1); // Make GPIOA bit 0 an output
-    pinMode(GPIOA, 1, 1); // Make GPIOA bit 1 an output
-    pinMode(GPIOA, 2, 1); // Make GPIOA bit 2 an output
+    pinMode(GPIOA, 0, 1); // Make GPIOA bit 0 an output GREEN LED
+    pinMode(GPIOA, 1, 1); // Make GPIOA bit 1 an output YELLOW LED
+    pinMode(GPIOA, 2, 1); // Make GPIOA bit 2 an output RED LED
 
-    pinMode(GPIOB, 3, 1); // Make GPIOB bit 3 an output
+    pinMode(GPIOB, 3, 1); // Make GPIOB bit 3 an output 
     pinMode(GPIOB, 4, 0); // Make GPIOB bit 4 an input
     enablePullUp(GPIOB, 4);
     pinMode(GPIOB, 5, 0); // Make GPIOA bit 5 an input
@@ -143,82 +143,62 @@ void initTimer(void)
 }
 
 void trafficLights(void) 
-
 { 
-  delay(200000); 
-  greenOff();   
-  yellowOn();   
-  delay(200000);   
-  yellowOff();   
-  redOn();   
-  delay(400000);   
-  redOff();  
-  greenOn();
+    delay(200000); 
+    greenOff();   
+    yellowOn();   
+    delay(200000);   
+    yellowOff();   
+    redOn();   
+    delay(400000);   
+    redOff();  
+    greenOn();
 } 
 
- 
 void greenOn()   
-
 {   
-  uint32_t original;   
-  original = GPIOA->ODR;   
-  original = original | 1;   
-  GPIOA->ODR = original;   
-
-}   
-
-  
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original | 1;   
+    GPIOA->ODR = original;   
+}
 
 void yellowOn()   
-
 {   
-  uint32_t original;   
-  original = GPIOA->ODR;   
-  original = original | 2;   
-  GPIOA->ODR = original;   
-
-}   
-
-  
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original | 2;   
+    GPIOA->ODR = original;   
+}
 
 void redOn()   
-
 {   
-  uint32_t original;   
-  original = GPIOA->ODR;   
-  original = original | 4;   
-  GPIOA->ODR = original;   
-
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original | 4;   
+    GPIOA->ODR = original;   
 }   
-
-  
 
 void greenOff()   
-
 {   
-  uint32_t original;   
-  original = GPIOA->ODR;   
-  original = original & ~(1);   
-  GPIOA->ODR = original;   
-
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original & ~(1);   
+    GPIOA->ODR = original;   
 }   
 
-  
-
 void yellowOff()   
-
 {   
-  uint32_t original;   
-  original = GPIOA->ODR;   
-  original = original & ~(2);   
-  GPIOA->ODR = original;   
-
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original & ~(2);   
+    GPIOA->ODR = original;   
 }   
 
 void redOff()   
 {   
-  uint32_t original;   
-  original = GPIOA->ODR;   
-  original = original & ~(4);   
-  GPIOA->ODR = original;   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original & ~(4);   
+    GPIOA->ODR = original;   
 } 
