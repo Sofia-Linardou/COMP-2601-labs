@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdint.h>
-// #include <stm32l0xx_hal.h> // library used in wowki simulation
 #include <stm32l031xx.h>
 
 #define TIMER_TICK_HZ 1000000UL  // TIM2 counter runs at 1 MHz
