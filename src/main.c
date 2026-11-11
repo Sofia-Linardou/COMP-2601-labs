@@ -1,5 +1,7 @@
+// Simulation: https://wokwi.com/projects/480137059606440961
+
+#include <stdio.h>
 #include <stdint.h>
-#include "musical_notes.h"
 #include <stm32l031xx.h>
 
 #define TIMER_TICK_HZ 1000000UL  // TIM2 counter runs at 1 MHz
@@ -12,49 +14,91 @@ void initTimer(void);
 int btn1pressed(void);
 int btn2pressed(void);
 void playNote(uint32_t Freq);
+void greenOn(void);   
+void yellowOn(void);   
+void redOn(void);   
+void greenOff(void);   
+void yellowOff(void);   
+void redOff(void);   
+void trafficLights(void) ;
 
 int main(void)
 {
     initClock();
     RCC->IOPENR |= RCC_IOPENR_IOPAEN | RCC_IOPENR_IOPBEN; // enable ports A and B
 
-    pinMode(GPIOA, 0, 1); // Make GPIOA bit 0 an output
-    pinMode(GPIOA, 1, 1); // Make GPIOA bit 1 an output
-    pinMode(GPIOA, 2, 1); // Make GPIOA bit 2 an output
+    pinMode(GPIOA, 0, 1); // Make GPIOA bit 0 an output GREEN LED
+    pinMode(GPIOA, 1, 1); // Make GPIOA bit 1 an output YELLOW LED
+    pinMode(GPIOA, 2, 1); // Make GPIOA bit 2 an output RED LED
 
-    pinMode(GPIOB, 3, 1); // Make GPIOB bit 3 an output
-    pinMode(GPIOB, 4, 0); // Make GPIOB bit 4 an input
+    pinMode(GPIOB, 1, 1); // Make GPIOB bit 1 an output 
+    pinMode(GPIOB, 4, 0); // Make GPIOB bit 4 an input BUTTON 1
     enablePullUp(GPIOB, 4);
-    pinMode(GPIOA, 7, 0); // Make GPIOA bit 7 an input
-    enablePullUp(GPIOA, 7);
+    pinMode(GPIOB, 5, 0); // Make GPIOA bit 5 an input BUTTON 2
+    enablePullUp(GPIOB, 5);
 
     initTimer();
-
     while (1)
     {
-        if (btn1pressed())
+        if (btn1pressed() && btn2pressed())
         {
-            playNote(1000);           // Play a 1 kHz tone on PB1
-            while (btn1pressed());   // Wait until button is released
+            playNote(1000);
+            redOn();
+            yellowOff();
+            greenOff();
+            while(btn1pressed() && btn2pressed());
+            playNote(0);
         }
-        playNote(0);                  // Stop the sound
+        else if (btn2pressed())
+        {
+            playNote(500); // Play a 500 Hz tone on PB1
+            yellowOn(); // Turn on yellow LED while the button is pressed
+            redOff();
+            greenOff();
+            while(btn2pressed());
+            playNote(0);
+        }
+        else if (btn1pressed())
+        {
+            playNote(250); // Play a 250 Hz tone on PB1
+            greenOn();
+            yellowOff();
+            redOff();
+            while(btn1pressed());
+            playNote(0);
+        }
+        else // Stop the sound
+        {
+            playNote(0);
+            redOff();
+            yellowOff();
+            greenOff();
+        }
     }
 }
 
 int btn1pressed(void)
 {
-    if ((GPIOA->IDR & (1u << 7)) == 0u)
+    if ((GPIOB->IDR & (1u << 4)) == 0u)
+        {
         return 1;
+        }
     else
+    {
         return 0;
+    }
 }
 
 int btn2pressed(void)
 {
-    if ((GPIOB->IDR & (1u << 4)) == 0u)
-        return 1;
+    if ((GPIOB->IDR & (1u << 5)) == 0u)
+        {
+            return 1;
+        }
     else
+    {
         return 0;
+    }
 }
 
 void playNote(uint32_t Freq)
@@ -134,3 +178,64 @@ void initTimer(void)
     TIM2->CNT = 0u;
     TIM2->EGR = TIM_EGR_UG;          // Apply prescaler and preload values
 }
+
+void trafficLights(void) 
+{ 
+    delay(200000); 
+    greenOff();   
+    yellowOn();   
+    delay(200000);   
+    yellowOff();   
+    redOn();   
+    delay(400000);   
+    redOff();  
+    greenOn();
+} 
+
+void greenOn()   
+{   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original | 1;   
+    GPIOA->ODR = original;   
+}
+
+void yellowOn()   
+{   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original | 2;   
+    GPIOA->ODR = original;   
+}
+
+void redOn()   
+{   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original | 4;   
+    GPIOA->ODR = original;   
+}   
+
+void greenOff()   
+{   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original & ~(1);   
+    GPIOA->ODR = original;   
+}   
+
+void yellowOff()   
+{   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original & ~(2);   
+    GPIOA->ODR = original;   
+}   
+
+void redOff()   
+{   
+    uint32_t original;   
+    original = GPIOA->ODR;   
+    original = original & ~(4);   
+    GPIOA->ODR = original;   
+} 
