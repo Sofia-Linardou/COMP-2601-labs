@@ -51,8 +51,8 @@ int main(void)
         }
         else if (btn2pressed())
         {
-            playNote(500); // Play a 500 Hz tone on PB1
-            yellowOn(); // Turn on yellow LED while the button is pressed
+            playNote(500);
+            yellowOn();
             redOff();
             greenOff();
             while(btn2pressed());
@@ -60,7 +60,7 @@ int main(void)
         }
         else if (btn1pressed())
         {
-            playNote(250); // Play a 250 Hz tone on PB1
+            playNote(250);
             greenOn();
             yellowOff();
             redOff();
