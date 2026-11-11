@@ -32,38 +32,78 @@ int main(void)
     pinMode(GPIOA, 1, 1); // Make GPIOA bit 1 an output YELLOW LED
     pinMode(GPIOA, 2, 1); // Make GPIOA bit 2 an output RED LED
 
-    pinMode(GPIOB, 3, 1); // Make GPIOB bit 3 an output 
-    pinMode(GPIOB, 4, 0); // Make GPIOB bit 4 an input
+    pinMode(GPIOB, 1, 1); // Make GPIOB bit 1 an output 
+    pinMode(GPIOB, 4, 0); // Make GPIOB bit 4 an input BUTTON 1
     enablePullUp(GPIOB, 4);
-    pinMode(GPIOB, 5, 0); // Make GPIOA bit 5 an input
+    pinMode(GPIOB, 5, 0); // Make GPIOA bit 5 an input BUTTON 2
     enablePullUp(GPIOB, 5);
 
     initTimer();
-
     while (1)
     {
-            playNote(1000);           // Play a 1 kHz tone on PB1
-            trafficLights();  
-        playNote(0);                  // Stop the sound
+      printf("hi");
+        if (btn1pressed() && btn2pressed())
+        {
+            printf("both");
+            playNote(1000);
+            redOn();
+            yellowOff();
+            greenOff();
+            while(btn1pressed() && btn2pressed());
+            playNote(0);
+        }
+        else if (btn2pressed())
+        {
+          printf("2");
+            playNote(500); // Play a 500 Hz tone on PB1
+            yellowOn(); // Turn on yellow LED while the button is pressed
+            redOff();
+            greenOff();
+            while(btn2pressed());
+            playNote(0);
+        }
+        else if (btn1pressed())
+        {
+            printf("both");
+            playNote(250); // Play a 250 Hz tone on PB1
+            greenOn();
+            yellowOff();
+            redOff();
+            while(btn1pressed());
+            playNote(0);
+        }
+        else // Stop the sound
+        {
+        playNote(0);
+        redOff();
+        yellowOff();
+        greenOff();
+        }
     }
 }
 
 int btn1pressed(void)
 {
-    if ((GPIOB->IDR & (1u << 5)) == 0u)
-      {printf("1");
+    if ((GPIOB->IDR & (1u << 4)) == 0u)
+        {
         return 1;
         }
     else
+    {
         return 0;
+    }
 }
 
 int btn2pressed(void)
 {
-    if ((GPIOB->IDR & (1u << 4)) == 0u)
-        return 1;
+    if ((GPIOB->IDR & (1u << 5)) == 0u)
+        {
+            return 1;
+        }
     else
+    {
         return 0;
+    }
 }
 
 void playNote(uint32_t Freq)
