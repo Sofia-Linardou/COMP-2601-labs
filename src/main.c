@@ -41,10 +41,8 @@ int main(void)
     initTimer();
     while (1)
     {
-      printf("hi");
         if (btn1pressed() && btn2pressed())
         {
-            printf("both");
             playNote(1000);
             redOn();
             yellowOff();
@@ -54,7 +52,6 @@ int main(void)
         }
         else if (btn2pressed())
         {
-          printf("2");
             playNote(500); // Play a 500 Hz tone on PB1
             yellowOn(); // Turn on yellow LED while the button is pressed
             redOff();
@@ -64,7 +61,6 @@ int main(void)
         }
         else if (btn1pressed())
         {
-            printf("both");
             playNote(250); // Play a 250 Hz tone on PB1
             greenOn();
             yellowOff();
@@ -74,10 +70,10 @@ int main(void)
         }
         else // Stop the sound
         {
-        playNote(0);
-        redOff();
-        yellowOff();
-        greenOff();
+            playNote(0);
+            redOff();
+            yellowOff();
+            greenOff();
         }
     }
 }
