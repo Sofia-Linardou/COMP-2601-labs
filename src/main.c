@@ -1,5 +1,5 @@
 // Simulation: https://wokwi.com/projects/480137059606440961
-
+// Sofia Linardou - A00042850
 #include <stdio.h>
 #include <stdint.h>
 #include <stm32l031xx.h>
